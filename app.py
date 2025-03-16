@@ -47,9 +47,31 @@ STATE_DEPARTMENTS = {
 }
 
 
+# def setup_driver():
+#     chrome_options = Options()
+#     chrome_options.add_argument('--headless')  # Run in headless mode
+#     chrome_options.add_argument('--no-sandbox')
+#     chrome_options.add_argument('--disable-dev-shm-usage')
+#     chrome_options.add_argument('--disable-gpu')
+#     chrome_options.add_argument('--window-size=1920,1080')
+#     chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+#     chrome_options.add_argument('--ignore-certificate-errors')
+#     chrome_options.add_argument('--ignore-ssl-errors')
+    
+#     # Different driver setup for production vs development
+#     if os.environ.get('ENVIRONMENT') == 'production':
+#         # In production, use the system Chrome installation
+#         service = Service('/usr/bin/chromedriver')
+#         return webdriver.Chrome(service=service, options=chrome_options)
+#     else:
+#         # In development, use webdriver_manager
+#         service = Service(ChromeDriverManager().install())
+#         return webdriver.Chrome(service=service, options=chrome_options)
+
+
 def setup_driver():
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  # Run in headless mode
+    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--disable-gpu')
@@ -58,15 +80,12 @@ def setup_driver():
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument('--ignore-ssl-errors')
     
-    # Different driver setup for production vs development
-    if os.environ.get('ENVIRONMENT') == 'production':
-        # In production, use the system Chrome installation
-        service = Service('/usr/bin/chromedriver')
-        return webdriver.Chrome(service=service, options=chrome_options)
-    else:
-        # In development, use webdriver_manager
-        service = Service(ChromeDriverManager().install())
-        return webdriver.Chrome(service=service, options=chrome_options)
+    # Use the system installed Chrome
+    chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+    
+    # Direct path to ChromeDriver
+    service = Service('/usr/bin/chromedriver')
+    return webdriver.Chrome(service=service, options=chrome_options)
 
 # [Rest of your functions remain unchanged]
 def select_department(driver, state_code):
