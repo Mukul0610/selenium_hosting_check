@@ -1,4 +1,5 @@
 import base64
+import random
 import time
 
 import json
@@ -14,6 +15,7 @@ import pandas as pd
 from datetime import datetime
 import os
 import requests
+import random
 
 # State code to department mapping
 STATE_DEPARTMENTS = {
@@ -68,25 +70,41 @@ STATE_DEPARTMENTS = {
 #         # In development, use webdriver_manager
 #         service = Service(ChromeDriverManager().install())
 #         return webdriver.Chrome(service=service, options=chrome_options)
+user_agents = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+]
 
 
 def setup_driver():
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--window-size=1920,1080')
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument('--ignore-ssl-errors')
+    # chrome_options = Options()
+    # chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--no-sandbox')
+    # chrome_options.add_argument('--disable-dev-shm-usage')
+    # chrome_options.add_argument('--disable-gpu')
+    # chrome_options.add_argument('--window-size=1920,1080')
+    # chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # chrome_options.add_argument('--ignore-certificate-errors')
+    # chrome_options.add_argument('--ignore-ssl-errors')
     
-    # Use the system installed Chrome
-    chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+    # # Use the system installed Chrome
+    # chrome_options.binary_location = "/usr/bin/google-chrome-stable"
     
-    # Direct path to ChromeDriver
-    service = Service('/usr/bin/chromedriver')
-    return webdriver.Chrome(service=service, options=chrome_options)
+    # # Direct path to ChromeDriver
+    # service = Service('/usr/bin/chromedriver')
+    # return webdriver.Chrome(service=service, options=chrome_options)
+    # Set up the Selenium WebDriver
+    options = webdriver.ChromeOptions()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless')
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-extensions')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--user-agent={}'.format(random.choice(user_agents)))
+
+    driver = webdriver.Chrome(options=options)
+    return driver
 
 # [Rest of your functions remain unchanged]
 def select_department(driver, state_code):
