@@ -1,6 +1,6 @@
 import base64
 import time
-import requests
+
 import json
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import pandas as pd
 from datetime import datetime
 import os
+import requests
 
 # State code to department mapping
 STATE_DEPARTMENTS = {
